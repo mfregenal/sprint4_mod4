@@ -1,41 +1,32 @@
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { useFavoriteContext } from "../contexts/FavoriteContext"
+import CharacterCard from "./CharacterCard"
 
 function FavoriteCards ( {amount} ) {
-  console.log("FavoriteCards")
 
   const [page, setPage] = useState(1)
 
-  const { myFavoritesList, deleteCharacter } = useFavoriteContext()
+  const { myFavoritesList } = useFavoriteContext()
 
   useEffect(() => {
     setPage(1)
   }, [amount])
 
-  const totalPages = Math.ceil(myFavoritesList.length / amount)
-  const startIndex = (page - 1) * amount
-  const endIndex = startIndex + amount
+  const totalPages = useMemo( () => {
+    return Math.ceil(myFavoritesList.length / amount)
+  }, [myFavoritesList.length, amount])
+
+  const visibleCharacters = useMemo(() => {
+    const startIndex = (page - 1) * amount
+    const endIndex = startIndex + amount
+    return myFavoritesList.slice(startIndex, endIndex)
+  }, [myFavoritesList, page, amount])
 
   return (
     <div className="flex flex-col items-center bg-[#0b1120]">
       <div className="grid max-lg:grid-cols-2 grid-cols-5 gap-20 text-white p-10">
-        { myFavoritesList.slice(startIndex, endIndex).map ( (character) => (
-            <div key={character.id} className="border-4 border-[#00ffc8] w-2xs rounded-2xl">
-              <div className="relative w-fit">
-                <img src={character.image} alt={character.name} className="rounded-t-2xl" />
-                <button onClick={() => deleteCharacter(character.id)}>
-                  <i className={`bi bi-suit-heart-fill absolute top-3 right-3 bg-black/60 p-1 rounded text-2xl text-red-500 hover:scale-125 transition-transform cursor-pointer`}></i>
-                </button>
-              </div>
-
-              <div className="flex flex-col justify-center m-2 space-y-2">
-                <p className="text-xl">Nombre: <span className="text-[#00ffc8]">{character.name}</span></p>
-                <p className="text-xl">Estado: <span className="text-[#00ffc8]">{character.status}</span></p>
-                <p className="text-xl">Especie: <span className="text-[#00ffc8]">{character.species}</span></p>
-                <p className="text-xl">Genero: <span className="text-[#00ffc8]">{character.gender}</span></p>
-                <p className="text-xl">Ubicación: <span className="text-[#00ffc8]">{character.location.name}</span></p>
-              </div>
-            </div>
+        { visibleCharacters.map ( (character) => (
+          <CharacterCard character={character} isFavorite={true} heartColor="text-red-500" />
           ))
         }
       </div>

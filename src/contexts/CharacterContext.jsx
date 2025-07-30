@@ -5,7 +5,6 @@ const CharacterContext = createContext()
 
 export const CharacterProvider = ({ children }) => {
 
-  console.log("CharacterContext")
   const [characterData, setCharacterData] = useState(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)

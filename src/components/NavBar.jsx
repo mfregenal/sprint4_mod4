@@ -1,5 +1,4 @@
 function NavBar () {
-  console.log("NavBar")
   return (
     <>
       <nav className="p-2 flex items-center justify-evenly border-b-2 border-white fixed z-50 w-full top-0 bg-[#0b1120]">

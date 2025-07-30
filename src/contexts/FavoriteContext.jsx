@@ -7,8 +7,6 @@ const FavoriteContext = createContext() // CREA UN CONTENEDOR DE DATOS
 // 2- CREAR EL PROVIDER
 export const FavoriteProvider = ({ children }) => {
 
-  console.log("favoriteContext")
-
   const favorite = useFavorite()
 
   return (

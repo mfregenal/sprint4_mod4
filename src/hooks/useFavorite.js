@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { toast } from "react-toastify";
 
 function useFavorite() {
   const key = 'favoritesList' // KEY PARA EL LOCALSTORAGE
@@ -8,7 +9,6 @@ function useFavorite() {
   useEffect(() => {
     const initialList = JSON.parse(localStorage.getItem(key)) || [] //CONVERTIR A OBJ DE JAVASCRIPT
     setMyFavoritesList(initialList); //CARGO EL LISTADO DE PERSONAJES FAVORITOS GUARDADOS EN LOCALSTORAGE
-    console.log("favorite hook")
   }, []);
 
   // AGREGAR NUEVO PERSONAJE A MYFAVORITESLIST (HANDLER)
@@ -22,23 +22,27 @@ function useFavorite() {
 
     setMyFavoritesList( newFavoritesList )
     localStorage.setItem(key, JSON.stringify(newFavoritesList)) //CONVERTIR A FORMATO JSON
+
+    toast(`Registro actualizado: "${newCharacter.name}" agregado a favoritos`)
   }
 
   // ELIMINAR UN PERSONAJE DE MYFAVORITESLIST
-  const deleteCharacter = (id) => {
-    const newFavoritesList = myFavoritesList.filter ( character => character.id !== id )
+  const deleteCharacter = (delCharacter) => {
+    const newFavoritesList = myFavoritesList.filter ( character => character.id !== delCharacter.id )
     if (newFavoritesList.length === 0){
       localStorage.removeItem(key);
     } else {
       localStorage.setItem(key, JSON.stringify(newFavoritesList))
     }
     setMyFavoritesList(newFavoritesList)
+    toast(`Registro actualizado: "${delCharacter.name}" eliminado de favoritos`)
   }
 
   //LIMPIAR LISTA
   const limpiarFavoritos = () => {
     setMyFavoritesList([])
     localStorage.removeItem(key)
+    toast(`La lista de favoritos a sido reseteada con éxito`)
   }
 
   // RETORNO LAS FUNCIONES PARA SU USO
