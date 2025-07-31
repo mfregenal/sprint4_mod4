@@ -4,7 +4,7 @@ function CharacterCard ( {character, isFavorite, heartColor}) {
     const { addCharacter, deleteCharacter } = useFavoriteContext() 
 
   return (
-    <div key={character.id} className="border-4 border-[#00ffc8] w-2xs rounded-2xl">
+    <div className="border-4 border-[#00ffc8] w-2xs rounded-2xl">
       <div className="relative w-fit">
         <img src={character.image} alt={character.name} className="rounded-t-2xl" />
         <button onClick={() => {isFavorite ? deleteCharacter(character) : addCharacter(character)}}>

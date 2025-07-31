@@ -39,7 +39,7 @@ function ListCards ( {name} ) {
   return (
     <>
       { loading ? <div className="flex flex-col items-center text-[#3cff44] pb-10"><CircleLoader size={100} speedMultiplier={1} color="#3cff44"/> <p>Buscando..</p></div>
-                : results?.length > 1 && name ?
+                : results?.length > 0 && name ?
                   <div className="grid max-lg:grid-cols-2 grid-cols-5 gap-20 text-white pb-10">
                     { results.map ( (character) => {
                         const isFavorite = myFavoritesList.some( fav => fav.id === character.id )
@@ -47,12 +47,12 @@ function ListCards ( {name} ) {
                         const heartColor = isFavorite ? "text-red-500" : "text-white"
 
                         return (
-                          <CharacterCard character={character} isFavorite={isFavorite} heartColor={heartColor} />
+                          <CharacterCard key={character.id} character={character} isFavorite={isFavorite} heartColor={heartColor} />
                         )
                       })
                     }
                   </div>
-                : <p className="text-white pb-10">{error}</p>
+                : <p className="text-red-500">{error}</p>
       }
 
       { ( totalPages > 1 && name )&&
